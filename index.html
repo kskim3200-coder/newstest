@@ -1,79 +1,152 @@
-import time
-import pandas as pd
-from datetime import datetime
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025년 12월 주식 시황 브리핑</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap");
+        body { font-family: "Pretendard", sans-serif; background-color: #f3f4f6; color: #1f2937; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .card { background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="pb-12">
 
-def get_naver_real_estate_news(target_count=100):
-    # 브라우저 설정
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
+    <!-- Header -->
+    <header class="gradient-bg text-white py-12 px-6 mb-8 shadow-lg">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h1 class="text-4xl font-bold mb-2">2025년 12월 주식 시황 브리핑</h1>
+                    <p class="text-blue-100 opacity-90">연말 랠리 전망 및 2026년 대비 투자 전략</p>
+                </div>
+                <div class="bg-white/20 backdrop-blur-md p-4 rounded-xl text-center border border-white/30">
+                    <p class="text-sm uppercase tracking-wider">Market Sentiment</p>
+                    <p class="text-2xl font-bold italic">"CAUTIOUSLY OPTIMISTIC"</p>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    
-    url = "https://news.naver.com/breakingnews/section/101/260"
-    driver.get(url)
-    time.sleep(2)
-
-    news_data = []
-    
-    print(f"데이터 수집 시작: {datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\")}")
-
-    while len(news_data) < target_count:
-        articles = driver.find_elements(By.CSS_SELECTOR, ".sa_item")
+    <main class="max-w-5xl mx-auto px-6 space-y-8">
         
-        for article in articles:
-            if len(news_data) >= target_count:
-                break
+        <!-- Key Macro Indicators -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="card p-6 border-l-4 border-blue-600">
+                <p class="text-sm text-gray-500 font-semibold mb-1">기준 금리 (Fed)</p>
+                <h2 class="text-3xl font-bold text-blue-700">3.75% ~ 4.00%</h2>
+                <p class="text-xs text-green-600 mt-2">▲ 2026년 인하 기대감 선반영</p>
+            </div>
+            <div class="card p-6 border-l-4 border-red-500">
+                <p class="text-sm text-gray-500 font-semibold mb-1">코스피 지수 전망</p>
+                <h2 class="text-3xl font-bold text-gray-800">2,750 ~ 2,980</h2>
+                <p class="text-xs text-gray-500 mt-2">박스권 상단 돌파 시도 중</p>
+            </div>
+            <div class="card p-6 border-l-4 border-yellow-500">
+                <p class="text-sm text-gray-500 font-semibold mb-1">원/달러 환율</p>
+                <h2 class="text-3xl font-bold text-gray-800">1,280원</h2>
+                <p class="text-xs text-blue-600 mt-2">▼ 하향 안정화 추세</p>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Market Outlook -->
+            <section class="space-y-6">
+                <div class="card p-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <span class="w-2 h-6 bg-blue-600 rounded-full"></span>
+                        시장 총평 및 전망
+                    </h3>
+                    <div class="space-y-4 text-gray-700 leading-relaxed">
+                        <p>
+                            2025년 12월 시장은 **'연착륙(Soft Landing)'** 성공 여부에 대한 확신이 강화되는 시기입니다. 
+                            인플레이션이 목표치인 2%대에 안착함에 따라, 시장의 시선은 '물가'에서 '성장'으로 완전히 이동했습니다.
+                        </p>
+                        <ul class="list-disc pl-5 space-y-2 text-sm">
+                            <li><strong>산타 랠리 기대감:</strong> 기업들의 4분기 실적 가시성이 확보되며 기관 매수세 유입 가능성 농후</li>
+                            <li><strong>유동성 회복:</strong> 금리 동결 기조 유지로 인한 채권 시장에서 주식 시장으로의 자금 이동(Asset Rotation) 시작</li>
+                            <li><strong>지정학적 리스크 완화:</strong> 공급망 안정화에 따른 글로벌 교역량 회복세</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card p-8 bg-blue-50 border border-blue-100">
+                    <h3 class="text-xl font-bold mb-4 text-blue-800">핵심 체크포인트</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center border-b border-blue-200 pb-2">
+                            <span class="text-sm">배당주 매력도</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded">매우 높음</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-blue-200 pb-2">
+                            <span class="text-sm">대형 기술주 밸류에이션</span>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-bold rounded">중립</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-blue-200 pb-2">
+                            <span class="text-sm">원자재 가격 변동성</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded">안정화</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Focus Sectors -->
+            <section class="card p-8">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span class="w-2 h-6 bg-green-600 rounded-full"></span>
+                    12월 주목해야 할 TOP 섹터
+                </h3>
                 
-            try:
-                title_element = article.find_element(By.CSS_SELECTOR, ".sa_text_title")
-                title = title_element.text
-                link = title_element.get_attribute("href")
-                
-                try:
-                    summary = article.find_element(By.CSS_SELECTOR, ".sa_text_lede").text
-                except:
-                    summary = "요약 정보가 없습니다."
-                
-                if not any(item["link"] == link for item in news_data):
-                    news_data.append({
-                        "no": len(news_data) + 1,
-                        "title": title,
-                        "summary": summary,
-                        "link": link
-                    })
-            except Exception:
-                continue
+                <div class="space-y-6">
+                    <!-- Sector 1 -->
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 shrink-0 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 font-bold">AI</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">AI 인프라 및 소프트웨어</h4>
+                            <p class="text-sm text-gray-600">하드웨어(HBM) 중심에서 소프트웨어 실적화 단계로 진입. B2B 솔루션 기업 주목.</p>
+                        </div>
+                    </div>
 
-        try:
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(1)
-            more_button = driver.find_element(By.CSS_SELECTOR, ".section_more_inner")
-            more_button.click()
-            time.sleep(1)
-        except:
-            break
+                    <!-- Sector 2 -->
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 shrink-0 bg-green-100 rounded-lg flex items-center justify-center text-green-600 font-bold">BIO</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">바이오 및 헬스케어</h4>
+                            <p class="text-sm text-gray-600">금리 하향 안정화의 최대 수혜주. 차세대 신약 파이프라인 임상 결과 발표 집중.</p>
+                        </div>
+                    </div>
 
-    driver.quit()
-    return news_data
+                    <!-- Sector 3 -->
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 shrink-0 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600 font-bold">EV</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">이차전지 (LFP 및 전고체)</h4>
+                            <p class="text-sm text-gray-600">캐즘(Chasm) 구간 통과 후 저가형 전기차 보급 확대로 인한 수요 회복세.</p>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-bold text-sm mb-2 text-gray-500">투자의견 (Investment Strategy)</h4>
+                        <p class="text-sm leading-relaxed font-medium">
+                            "지수 전체를 추종하기보다는 **실적 기반의 종목 장세**가 이어질 것. 연말 배당 성향이 높은 전통 금융주와 AI 수익화에 성공한 기술주를 6:4 비율로 배분하는 바벨 전략 추천."
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-def main():
-    news_list = get_naver_real_estate_news(100)
-    if news_list:
-        df = pd.DataFrame(news_list)
-        today_str = datetime.now().strftime(\"%Y%m%d\")
-        filename = f"naver_real_estate_news_{today_str}.csv"
-        df.to_csv(filename, index=False, encoding=\"utf-8-sig\")
-        print(f"총 {len(news_list)}개의 기사를 요약했습니다.")
-    else:
-        print("기사를 찾을 수 없습니다.")
+        <!-- Disclaimer -->
+        <footer class="text-center text-gray-400 text-xs mt-12">
+            <p>※ 본 자료는 2025년 12월 시장 상황을 가정하여 작성된 예시 자료이며, 실제 투자 결과에 대해 법적 책임을 지지 않습니다.</p>
+            <p class="mt-1">Generated by Market Insight Dashboard v1.0</p>
+        </footer>
 
-if __name__ == "__main__":
-    main()
+    </main>
+
+</body>
+</html>
