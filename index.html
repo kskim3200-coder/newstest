@@ -1,0 +1,79 @@
+import time
+import pandas as pd
+from datetime import datetime
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+
+def get_naver_real_estate_news(target_count=100):
+    # 브라우저 설정
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    
+    url = "https://news.naver.com/breakingnews/section/101/260"
+    driver.get(url)
+    time.sleep(2)
+
+    news_data = []
+    
+    print(f"데이터 수집 시작: {datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\")}")
+
+    while len(news_data) < target_count:
+        articles = driver.find_elements(By.CSS_SELECTOR, ".sa_item")
+        
+        for article in articles:
+            if len(news_data) >= target_count:
+                break
+                
+            try:
+                title_element = article.find_element(By.CSS_SELECTOR, ".sa_text_title")
+                title = title_element.text
+                link = title_element.get_attribute("href")
+                
+                try:
+                    summary = article.find_element(By.CSS_SELECTOR, ".sa_text_lede").text
+                except:
+                    summary = "요약 정보가 없습니다."
+                
+                if not any(item["link"] == link for item in news_data):
+                    news_data.append({
+                        "no": len(news_data) + 1,
+                        "title": title,
+                        "summary": summary,
+                        "link": link
+                    })
+            except Exception:
+                continue
+
+        try:
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(1)
+            more_button = driver.find_element(By.CSS_SELECTOR, ".section_more_inner")
+            more_button.click()
+            time.sleep(1)
+        except:
+            break
+
+    driver.quit()
+    return news_data
+
+def main():
+    news_list = get_naver_real_estate_news(100)
+    if news_list:
+        df = pd.DataFrame(news_list)
+        today_str = datetime.now().strftime(\"%Y%m%d\")
+        filename = f"naver_real_estate_news_{today_str}.csv"
+        df.to_csv(filename, index=False, encoding=\"utf-8-sig\")
+        print(f"총 {len(news_list)}개의 기사를 요약했습니다.")
+    else:
+        print("기사를 찾을 수 없습니다.")
+
+if __name__ == "__main__":
+    main()
